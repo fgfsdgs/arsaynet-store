@@ -17,15 +17,16 @@ const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
 
 const FLAZDATA_API_KEY = process.env.FLAZDATA_API_KEY ?? '';
-const AKRAB_ACCOUNT_CODE = process.env.AKRAB_ACCOUNT_CODE ?? '';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { destination, productCode, productPrice, productName, uid } = body;
+    const normalizedDestination = String(destination || '').trim();
+    const normalizedProductCode = String(productCode || '').trim();
 
     // 1. Validasi data input awal
-    if (!destination || !productCode || !productPrice || !uid) {
+    if (!normalizedDestination || !normalizedProductCode || !productPrice || !uid) {
       return NextResponse.json({ success: false, message: "Data request tidak lengkap." }, { status: 400 });
     }
 
@@ -62,7 +63,8 @@ export async function POST(request: Request) {
         status: "proses",
         type: "pembelian",
         method: "out",
-        destination: destination,
+        destination: normalizedDestination,
+        productCode: normalizedProductCode,
         createdAt: new Date()
       });
     });
@@ -77,9 +79,9 @@ export async function POST(request: Request) {
           "Accept": "application/json"
         },
         body: JSON.stringify({
-          code: AKRAB_ACCOUNT_CODE,
-          destination: destination,
-          product_code: productCode
+          code: normalizedProductCode,
+          destination: normalizedDestination,
+          ref_id: `INV-${Date.now()}`
         })
       });
 
