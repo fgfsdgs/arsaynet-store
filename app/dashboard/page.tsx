@@ -53,6 +53,24 @@ const DEPOSIT_FEE = 153;
 const MAX_DEPOSIT = 499000;
 const MIN_DEPOSIT = 10000;
 const XLA_PRICE_MARKUP = 1000;
+const ALLOWED_MPA_PRODUCT_KEYS = [
+  'superminiv2',
+  'supermini',
+  'megabigv2',
+  'megabig',
+  'jumbov3',
+  'jumbov2',
+  'jumbo',
+  'mini',
+  'big',
+];
+
+const normalizeProductName = (name: string) => name.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+const isAllowedMpaProduct = (product: any) => {
+  const name = normalizeProductName(product?.name || '');
+  return ALLOWED_MPA_PRODUCT_KEYS.some((key) => name.includes(key));
+};
 
 // ─── Nav items ───────────────────────────────────────────────────────────────
 const NAV_ITEMS = [
@@ -185,7 +203,10 @@ export default function DashboardPage() {
         fetch("/api/products-xla", { method: "POST" }),
       ]);
       const [rMPA, rXLA] = await Promise.all([resMPA.json(), resXLA.json()]);
-      if (rMPA.success && rMPA.data) setApiProductsMPA(Array.isArray(rMPA.data) ? rMPA.data : [rMPA.data]);
+      if (rMPA.success && rMPA.data) {
+        const mpaProducts = Array.isArray(rMPA.data) ? rMPA.data : [rMPA.data];
+        setApiProductsMPA(mpaProducts.filter(isAllowedMpaProduct));
+      }
       if (rXLA.success && rXLA.data) setApiProductsXLA(Array.isArray(rXLA.data) ? rXLA.data : [rXLA.data]);
     } catch (err) { console.error(err); }
     finally { setLoadingProducts(false); }
