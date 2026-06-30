@@ -328,6 +328,37 @@ export default function DashboardPage() {
         </button>
       </div>
 
+      <div className="grid grid-cols-2 gap-3">
+        <button
+          onClick={() => { setActiveCategory('XLA'); setActiveMenu('beli'); }}
+          className="bg-[#1a1a1f] border border-zinc-800 hover:border-indigo-500/50 hover:bg-zinc-900 rounded-xl p-4 text-left transition-all"
+        >
+          <div className="flex items-center justify-between gap-2">
+            <div className="w-8 h-8 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
+              <Layers className="w-4 h-4" />
+            </div>
+            <ChevronRight className="w-4 h-4 text-zinc-600" />
+          </div>
+          <p className="text-sm font-bold text-white mt-3">Stok XLA</p>
+          <p className="text-[11px] text-zinc-500 mt-0.5">Cek produk XLA</p>
+        </button>
+        <a
+          href="https://juraganxl.my.id"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-[#1a1a1f] border border-zinc-800 hover:border-emerald-500/50 hover:bg-zinc-900 rounded-xl p-4 text-left transition-all"
+        >
+          <div className="flex items-center justify-between gap-2">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+              <Package className="w-4 h-4" />
+            </div>
+            <ChevronRight className="w-4 h-4 text-zinc-600" />
+          </div>
+          <p className="text-sm font-bold text-white mt-3">Stok XDA</p>
+          <p className="text-[11px] text-zinc-500 mt-0.5">juraganxl.my.id</p>
+        </a>
+      </div>
+
       {/* Stat row */}
       <div className="grid grid-cols-2 gap-3">
         <div className="bg-[#1a1a1f] border border-zinc-800 rounded-xl p-4">
