@@ -275,6 +275,10 @@ export default function DashboardPage() {
     return `https://wa.me/${ADMIN_PHONE.replace('+', '')}?text=${encodeURIComponent(msg)}`;
   };
 
+  const openAdminWhatsapp = () => {
+    window.open(`https://wa.me/${ADMIN_PHONE.replace('+', '')}`, '_blank', 'width=480,height=720,noopener,noreferrer');
+  };
+
   // ─── DASHBOARD ─────────────────────────────────────────────────────────────
   const renderDashboard = () => (
     <div className="space-y-6">
@@ -699,7 +703,7 @@ export default function DashboardPage() {
             </div>
             {/* WhatsApp button */}
             <button
-              onClick={() => window.open(`https://wa.me/${ADMIN_PHONE.replace('+', '')}`, '_blank', 'width=480,height=720,noopener,noreferrer')}
+              onClick={openAdminWhatsapp}
               className="mt-3 w-full flex items-center justify-center gap-2 px-3 py-2 bg-emerald-600/90 hover:bg-emerald-500 text-white rounded-lg border border-emerald-500/40 transition-all"
             >
               <Smartphone className="w-3.5 h-3.5" />
@@ -749,8 +753,14 @@ export default function DashboardPage() {
             <span className="font-bold text-sm text-white">Arsynet Store</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-zinc-500">Rp</span>
-            <span className="text-xs font-bold text-white tabular-nums">{user.balance.toLocaleString('id-ID')}</span>
+            <button
+              onClick={openAdminWhatsapp}
+              aria-label={`Hubungi admin WhatsApp ${ADMIN_PHONE_DISPLAY}`}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-600/15 px-2.5 py-1.5 text-emerald-300 transition-colors hover:bg-emerald-600/25"
+            >
+              <Smartphone className="w-3.5 h-3.5" />
+              <span className="text-[11px] font-semibold tabular-nums">{ADMIN_PHONE_DISPLAY}</span>
+            </button>
           </div>
         </header>
 
