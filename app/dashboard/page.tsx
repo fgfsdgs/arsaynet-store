@@ -63,6 +63,14 @@ const NAV_ITEMS = [
 ];
 
 // ─── Status badge ─────────────────────────────────────────────────────────────
+function WhatsappLogo({ className = '' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 32 32" aria-hidden="true" fill="currentColor">
+      <path d="M16.01 3.5C9.12 3.5 3.5 9.06 3.5 15.89c0 2.2.59 4.34 1.7 6.22L3.62 28.5l6.56-1.53a12.61 12.61 0 0 0 5.83 1.44c6.89 0 12.49-5.55 12.49-12.39S22.9 3.5 16.01 3.5Zm0 22.78c-1.82 0-3.61-.48-5.18-1.38l-.37-.21-3.89.91.93-3.77-.24-.39a10.14 10.14 0 0 1-1.56-5.55c0-5.66 4.62-10.27 10.31-10.27 5.68 0 10.3 4.61 10.3 10.27 0 5.67-4.62 10.39-10.3 10.39Zm5.65-7.71c-.31-.15-1.83-.9-2.11-1-.28-.1-.49-.15-.7.15-.2.31-.8 1-.98 1.19-.18.2-.36.23-.67.08-.31-.16-1.3-.48-2.48-1.52-.92-.82-1.53-1.82-1.71-2.13-.18-.31-.02-.47.14-.63.14-.14.31-.36.46-.54.15-.18.2-.31.31-.51.1-.2.05-.38-.03-.54-.08-.15-.7-1.67-.95-2.29-.25-.6-.5-.52-.7-.53h-.59c-.2 0-.54.08-.82.38-.28.31-1.08 1.05-1.08 2.56 0 1.51 1.11 2.97 1.26 3.18.15.2 2.18 3.31 5.28 4.64.74.32 1.31.51 1.76.65.74.23 1.41.2 1.94.12.59-.09 1.83-.74 2.09-1.46.26-.72.26-1.33.18-1.46-.08-.13-.28-.2-.59-.35Z" />
+    </svg>
+  );
+}
+
 function StatusBadge({ status }: { status: string }) {
   const map: Record<string, { label: string; cls: string }> = {
     success:    { label: 'Berhasil',   cls: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' },
@@ -294,7 +302,7 @@ export default function DashboardPage() {
           <p className="text-3xl font-bold text-white tabular-nums">Rp {user.balance.toLocaleString('id-ID')}</p>
           <p className="text-xs text-zinc-600 mt-1">{user.status}</p>
         </div>
-        <button onClick={() => setActiveMenu('deposit')} className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors shrink-0">
+        <button onClick={() => setActiveMenu('deposit')} className="inline-flex w-full sm:w-auto items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors shrink-0">
           <CreditCard className="w-4 h-4" /> Isi Saldo
         </button>
       </div>
@@ -752,17 +760,15 @@ export default function DashboardPage() {
             <div className="w-6 h-6 bg-indigo-600 rounded-md flex items-center justify-center text-white font-black text-[10px]">A</div>
             <span className="font-bold text-sm text-white">Arsynet Store</span>
           </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={openAdminWhatsapp}
-              aria-label={`Hubungi admin WhatsApp ${ADMIN_PHONE_DISPLAY}`}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-600/15 px-2.5 py-1.5 text-emerald-300 transition-colors hover:bg-emerald-600/25"
-            >
-              <Smartphone className="w-3.5 h-3.5" />
-              <span className="text-[11px] font-semibold tabular-nums">{ADMIN_PHONE_DISPLAY}</span>
-            </button>
-          </div>
         </header>
+
+        <button
+          onClick={openAdminWhatsapp}
+          aria-label={`Hubungi admin WhatsApp ${ADMIN_PHONE_DISPLAY}`}
+          className="fixed right-4 top-3 z-40 inline-flex h-10 w-10 items-center justify-center rounded-full border border-emerald-400/40 bg-emerald-500 text-white shadow-lg shadow-emerald-950/50 transition-transform hover:scale-105 active:scale-95"
+        >
+          <WhatsappLogo className="h-5 w-5" />
+        </button>
 
         {/* Mobile content */}
         <main className="flex-1 overflow-y-auto px-4 py-5 pb-24">
