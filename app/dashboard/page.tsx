@@ -156,6 +156,27 @@ export default function DashboardPage() {
     return (prod?.price || 0) + (activeCategory === 'XLA' ? XLA_PRICE_MARKUP : 0);
   }, [activeCategory]);
 
+  const getProductDescription = (prod: any) => {
+    const desc = prod?.description ?? prod?.deskripsi ?? prod?.keterangan ?? prod?.detail;
+
+    if (Array.isArray(desc)) {
+      return desc
+        .map((item) => {
+          if (typeof item === 'string') return item;
+          if (item && typeof item === 'object') return Object.values(item).filter(Boolean).join(' ');
+          return '';
+        })
+        .filter(Boolean)
+        .join(' • ');
+    }
+
+    if (desc && typeof desc === 'object') {
+      return Object.values(desc).filter(Boolean).join(' • ');
+    }
+
+    return typeof desc === 'string' ? desc.trim() : '';
+  };
+
   const fetchAllProducts = useCallback(async () => {
     setLoadingProducts(true);
     try {
@@ -500,12 +521,16 @@ export default function DashboardPage() {
                   {products.map((prod: any, i: number) => {
                     const isSelected = selectedProduct?.code === prod.code;
                     const displayPrice = (prod.price || 0) + (activeCategory === 'XLA' ? XLA_PRICE_MARKUP : 0);
+                    const description = getProductDescription(prod);
                     return (
                       <div key={i} onClick={() => setSelectedProduct(prod)} className={`flex items-center justify-between px-4 py-3.5 cursor-pointer transition-colors ${isSelected ? 'bg-indigo-600/10 border-l-2 border-l-indigo-500' : 'hover:bg-zinc-800/40 border-l-2 border-l-transparent'}`}>
                         <div className="flex items-center gap-3 min-w-0">
                           <Layers className={`w-4 h-4 shrink-0 ${isSelected ? 'text-indigo-400' : 'text-zinc-600'}`} />
                           <div className="min-w-0">
                             <p className={`text-xs font-semibold truncate ${isSelected ? 'text-white' : 'text-zinc-300'}`}>{prod.name || 'Paket Layanan'}</p>
+                            {description && (
+                              <p className="text-[10px] text-zinc-500 mt-1 leading-relaxed line-clamp-2">{description}</p>
+                            )}
                             <p className="text-[10px] text-zinc-600 mt-0.5">
                               Stok: <span className={prod.stock === 'Tersedia' || prod.stock > 0 ? 'text-emerald-500' : 'text-rose-500'}>
                                 {typeof prod.stock === 'string' ? prod.stock : prod.stock || 0}
@@ -539,6 +564,12 @@ export default function DashboardPage() {
                       <div className="flex justify-between px-3 py-2.5"><span className="text-zinc-500">Kategori</span><span className="text-indigo-400 font-semibold">AKRAB {activeCategory}</span></div>
                       <div className="flex justify-between px-3 py-2.5"><span className="text-zinc-500">Produk</span><span className="text-white font-medium text-right max-w-[60%] truncate">{selectedProduct.name}</span></div>
                       <div className="flex justify-between px-3 py-2.5"><span className="text-zinc-500">Kode</span><span className="text-amber-400 font-mono">{selectedProduct.code}</span></div>
+                      {getProductDescription(selectedProduct) && (
+                        <div className="px-3 py-2.5">
+                          <p className="text-zinc-500 mb-1">Deskripsi</p>
+                          <p className="text-zinc-300 leading-relaxed">{getProductDescription(selectedProduct)}</p>
+                        </div>
+                      )}
                       {/* Harga di order form: XLA +1000 */}
                       <div className="flex justify-between px-3 py-2.5 bg-emerald-500/5">
                         <span className="text-zinc-500">Harga</span>
@@ -581,6 +612,12 @@ export default function DashboardPage() {
                 </div>
                 <div className="border border-zinc-800 rounded-lg divide-y divide-zinc-800/60 text-xs overflow-hidden">
                   <div className="flex justify-between px-3 py-2.5"><span className="text-zinc-500">Produk</span><span className="text-white font-medium">{selectedProduct.name}</span></div>
+                  {getProductDescription(selectedProduct) && (
+                    <div className="px-3 py-2.5">
+                      <p className="text-zinc-500 mb-1">Deskripsi</p>
+                      <p className="text-zinc-300 leading-relaxed">{getProductDescription(selectedProduct)}</p>
+                    </div>
+                  )}
                   {/* Harga di modal konfirmasi: XLA +1000 */}
                   <div className="flex justify-between px-3 py-2.5 bg-emerald-500/5">
                     <span className="text-zinc-500">Harga</span>

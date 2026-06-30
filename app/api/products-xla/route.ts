@@ -23,6 +23,7 @@ export async function POST() {
       stock: p.kosong === 0 ? 'Tersedia' : 'Kosong',
       is_available: p.kosong === 0 && p.gangguan === 0,
       is_trial: false,
+      description: p.deskripsi || p.description || p.keterangan || p.detail || '',
     }));
 
     return NextResponse.json({ success: true, data: normalized });
