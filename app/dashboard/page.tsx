@@ -697,11 +697,14 @@ export default function DashboardPage() {
                 <p className="text-[10px] text-zinc-500 mt-0.5">{user.status}</p>
               </div>
             </div>
-            {/* Balance pill */}
-            <div className="mt-3 px-3 py-2 bg-zinc-900 rounded-lg border border-zinc-800">
-              <p className="text-[10px] text-zinc-500 mb-0.5">Saldo</p>
-              <p className="text-sm font-bold text-white tabular-nums">Rp {user.balance.toLocaleString('id-ID')}</p>
-            </div>
+            {/* WhatsApp button */}
+            <button
+              onClick={() => window.open(`https://wa.me/${ADMIN_PHONE.replace('+', '')}`, '_blank', 'width=480,height=720,noopener,noreferrer')}
+              className="mt-3 w-full flex items-center justify-center gap-2 px-3 py-2 bg-emerald-600/90 hover:bg-emerald-500 text-white rounded-lg border border-emerald-500/40 transition-all"
+            >
+              <Smartphone className="w-3.5 h-3.5" />
+              <span className="text-xs font-semibold">Hubungi Admin</span>
+            </button>
           </div>
 
           {/* Nav */}
