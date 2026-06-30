@@ -53,13 +53,18 @@ const DEPOSIT_FEE = 153;
 const MAX_DEPOSIT = 499000;
 const MIN_DEPOSIT = 10000;
 const XLA_PRICE_MARKUP = 1000;
-const ALLOWED_MPA_PRODUCT_KEYS = [
+const ALLOWED_XLA_PRODUCT_KEYS = [
   'superminiv2',
   'supermini',
+  'megabigv2promo',
   'megabigv2',
+  'megabigpromo',
   'megabig',
+  'jumbov3promo',
   'jumbov3',
   'jumbov2',
+  'bigv2promo',
+  'bigv2',
   'jumbo',
   'mini',
   'big',
@@ -67,11 +72,10 @@ const ALLOWED_MPA_PRODUCT_KEYS = [
 
 const normalizeProductName = (name: string) => name.toLowerCase().replace(/[^a-z0-9]/g, '');
 
-const isAllowedMpaProduct = (product: any) => {
+const isAllowedXlaProduct = (product: any) => {
   const name = normalizeProductName(product?.name || '');
-  return ALLOWED_MPA_PRODUCT_KEYS.some((key) => name.includes(key));
+  return ALLOWED_XLA_PRODUCT_KEYS.some((key) => name.includes(key));
 };
-
 // ─── Nav items ───────────────────────────────────────────────────────────────
 const NAV_ITEMS = [
   { id: 'dashboard', label: 'Ringkasan', icon: LayoutDashboard },
@@ -203,11 +207,11 @@ export default function DashboardPage() {
         fetch("/api/products-xla", { method: "POST" }),
       ]);
       const [rMPA, rXLA] = await Promise.all([resMPA.json(), resXLA.json()]);
-      if (rMPA.success && rMPA.data) {
-        const mpaProducts = Array.isArray(rMPA.data) ? rMPA.data : [rMPA.data];
-        setApiProductsMPA(mpaProducts.filter(isAllowedMpaProduct));
+      if (rMPA.success && rMPA.data) setApiProductsMPA(Array.isArray(rMPA.data) ? rMPA.data : [rMPA.data]);
+      if (rXLA.success && rXLA.data) {
+        const xlaProducts = Array.isArray(rXLA.data) ? rXLA.data : [rXLA.data];
+        setApiProductsXLA(xlaProducts.filter(isAllowedXlaProduct));
       }
-      if (rXLA.success && rXLA.data) setApiProductsXLA(Array.isArray(rXLA.data) ? rXLA.data : [rXLA.data]);
     } catch (err) { console.error(err); }
     finally { setLoadingProducts(false); }
   }, []);
